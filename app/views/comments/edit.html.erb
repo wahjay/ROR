@@ -1,0 +1,52 @@
+<p>
+  <strong>Title:</strong>
+  <%= @article.title %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @article.text %>
+</p>
+
+<!-- Rendering partial collections -->
+<h2>Comments</h2>
+<% @article.comments.each do |comment| %>
+  <% if @comment == comment %>
+    <%= form_with(model: [ @article, @comment], local: true) do |form| %>
+      <p>
+        <strong><%= @comment.commenter %><strong>
+        <br>
+        <%= form.text_area :body %>
+      </p>
+      <p>
+        <%= form.submit "Update"%>
+     </p>
+   <% end %>
+  <% else %>
+   <p>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+   </p>
+   <p>
+    Comment:
+    <%= comment.body %>
+   </p>
+   <p>
+    <%= link_to 'Delete ', [comment.article, comment],
+                 method: :delete,
+                 data: { confirm: 'Are you sure?' } %>
+    <%= link_to ' Edit', "/articles/#{@article.id}/comments/#{comment.id}/edit" %>
+   </p>
+ <% end %>
+<% end %>
+
+
+<!-- Rendering a Partial Form -->
+<h2>Add a comment:</h2>
+<%= render 'comments/form' %>
+
+<!-- edit_article_path returns  /photos/:id/edit -->
+<%= link_to 'Edit', "/articles/#{@article.id}/edit"  %> |
+
+<!-- articles_path returns path '/articles' -->
+<%= link_to 'Back', articles_path %>

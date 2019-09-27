@@ -1,0 +1,51 @@
+<h1>New Article</h1>
+<!--
+When you call form_with, you pass it an identifying scope for this form.
+In this case, it's the symbol :article.
+
+Inside the block for this method, the FormBuilder object - represented by form -
+is used to build two labels and two text fields, one each for the title and text of an article.
+
+Finally, a call to submit on the form object will create a submit button for the form.
+-->
+
+<!--
+The articles_path helper is passed to the :url option.
+The articles_path helper tells Rails to point the form to the URI Pattern associated with
+the articles prefix; and the form will (by default) send a POST request to that route.
+This is associated with the create action of the current controller, the ArticlesController.
+-->
+
+<%= form_with scope: :article, url: articles_path, local: true do |form| %>
+
+  <% if @article.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@article.errors.count, "error") %>
+        prohibited this article from being saved:
+      </h2>
+      <ul>
+        <% @article.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+
+  <p>
+    <%= form.label :text %><br>
+    <%= form.text_area :text %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
+<!-- articles_path returns path '/articles' -->
+<%= link_to 'Back', articles_path %>
